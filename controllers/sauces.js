@@ -1,10 +1,10 @@
-const Sauce = require('../models/sauce');
+const Sauces = require('../models/sauces');
 const fs = require('fs');
 
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
-    const sauce = new Sauce({
+    const sauce = new Sauces({
       ...sauceObject,
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
@@ -15,7 +15,7 @@ exports.createSauce = (req, res, next) => {
 
 
 exports.getOneSauce = (req, res, next) => {
-    Sauce.findOne({
+    Sauces.findOne({
         _id: req.params.id
     }).then((sauce) => {res.status(200).json(sauce);}
     ).catch((error) => {res.status(404).json({error: error})});
@@ -27,17 +27,17 @@ exports.modifySauce = (req, res, next) => {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
       } : { ...req.body };
-    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+    Sauces.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
       .then(() => res.status(200).json({ message: 'Objet modifié !'}))
       .catch(error => res.status(400).json({ error }));
   };
 
   exports.deleteSauce = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id })
+    Sauces.findOne({ _id: req.params.id })
       .then(sauce => {
         const filename = sauce.imageUrl.split('/images/')[1];
         fs.unlink(`images/${filename}`, () => {
-          Sauce.deleteOne({ _id: req.params.id })
+          Sauces.deleteOne({ _id: req.params.id })
             .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
             .catch(error => res.status(400).json({ error }));
         });
@@ -45,9 +45,8 @@ exports.modifySauce = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
-
   exports.getAllSauce = (req, res, next) => {
-    Sauce.find()
+    Sauces.find()
     .then((sauce) => {res.status(200).json(sauce);})
     .catch((error) => {res.status(400).json({error: error})});
 };
