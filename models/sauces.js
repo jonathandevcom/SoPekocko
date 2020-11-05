@@ -1,7 +1,6 @@
-///// Création d'un schema pour les objets "sauces"
 const mongoose = require('mongoose');
 
-///// schema des objets
+///// Création d'un schema pour les sauces
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },

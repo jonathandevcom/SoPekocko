@@ -1,17 +1,9 @@
-///// Cryptage du mot de passe
-///// npm install --save bcrypt
-//const { JsonWebTokenError } = require('jsonwebtoken');
-
-///// Création des TOKEN de vérification
-///// npm install --save jsonwebtoken
-
-
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken') 
 
 const User = require('../models/user'); 
 
+///// Création d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
@@ -26,6 +18,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
+///// Connexion de l'utilisateur après vérification
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then(user => {

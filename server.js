@@ -1,7 +1,8 @@
-///// Importation des modules dont nous avons besoin
+///// Création du serveur
 const http = require('http');
 const app = require('./app');
 
+///// Renvoi d'un port valide
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -13,7 +14,6 @@ const normalizePort = val => {
   }
   return false;
 };
-///// Renvoie un port valide
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -38,7 +38,6 @@ const errorHandler = error => {
   }
 };
 
-///// Création du serveur
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
