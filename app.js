@@ -6,9 +6,11 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 const path = require('path');
+const helmet = require("helmet");
+require('dotenv').config()
 
 ///// Connexion à MongoDb
-mongoose.connect('mongodb+srv://jonathan:jonathandev@sopekocko.cre5d.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect(process.env.LIEN_MONGODB,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -23,6 +25,8 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
+
+app.use(helmet());
 
 app.use(bodyParser.json());
 
