@@ -2,9 +2,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken') 
 
 const User = require('../models/user'); 
+const { body, validationResult } = require('express-validator');
 
-///// Création d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+  }
+
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const user = new User({

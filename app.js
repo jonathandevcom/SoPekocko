@@ -8,6 +8,7 @@ const saucesRoutes = require('./routes/sauces');
 const path = require('path');
 const helmet = require("helmet");
 require('dotenv').config()
+const xss = require('xss-clean')
 
 ///// Connexion à MongoDb
 mongoose.connect(process.env.LIEN_MONGODB,
@@ -26,8 +27,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(xss())
 app.use(helmet());
-
 app.use(bodyParser.json());
 
 ///// Enregistrement des routeurs
