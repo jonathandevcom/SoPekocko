@@ -13,12 +13,10 @@ router.post('/signup', [
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 3 // maximum de 3 requêtes
+    max: 10 // maximum de 10 requêtes
   });
-
-  router.use(limiter);
   
-router.post('/login', userCtrl.login);
+router.post('/login', limiter, userCtrl.login);
 
 module.exports = router;
 
